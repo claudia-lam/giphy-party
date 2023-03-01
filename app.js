@@ -1,5 +1,6 @@
 "use strict";
 
+"hello";
 async function getGiphy(evt) {
   evt.preventDefault();
 
