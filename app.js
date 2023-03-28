@@ -2,6 +2,9 @@
 
 const GIPHY_BASE_URL = "http://api.giphy.com/v1";
 const GIPHY_API_KEY = "u0m6RVDC8jN9C65VwgvPFerw8SW6Pqyd";
+const $gifContainer = $(".giphy-container");
+console.log("gif-container", $gifContainer);
+const $removeBtn = $("#remove-images");
 
 async function getGiphy(evt) {
   evt.preventDefault();
@@ -22,7 +25,7 @@ async function getGiphy(evt) {
 
   const newImg = createImg(gifUrl);
 
-  $(".giphy-container").append(newImg);
+  $gifContainer.append(newImg);
 }
 
 function pickRandomGif(responseData) {
@@ -35,4 +38,11 @@ function createImg(gifUrl) {
   return $img;
 }
 
+function removeGifs(evt) {
+  $gifContainer.empty();
+}
+
+
 $("#search").submit(getGiphy);
+$removeBtn.submit(removeGifs);
+
