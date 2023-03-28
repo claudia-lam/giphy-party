@@ -3,33 +3,35 @@
 const GIPHY_BASE_URL = "http://api.giphy.com/v1";
 const GIPHY_API_KEY = "u0m6RVDC8jN9C65VwgvPFerw8SW6Pqyd";
 const $gifContainer = $(".giphy-container");
-console.log("gif-container", $gifContainer);
 const $removeBtn = $("#remove-images");
 
-async function getGiphy(evt) {
+async function addGiphy(evt) {
   evt.preventDefault();
 
+  //get search value form form
   let searchTerm = $("#search-form").val();
 
+  //make a get request to giphy api for search term
   const response = await axios.get(`${GIPHY_BASE_URL}/gifs/search`, {
     params: { q: searchTerm, api_key: GIPHY_API_KEY },
   });
 
   console.log("response", response.data.data);
 
+  //pick a random gif
   const randomGif = pickRandomGif(response.data.data);
-  console.log(randomGif);
 
-  const gifUrl = response.data.data[randomGif].images.original.url;
-  console.log(gifUrl);
+  //create html of new image
+  const newImg = createImg(randomGif);
 
-  const newImg = createImg(gifUrl);
-
+  //add gif to gif container in html
   $gifContainer.append(newImg);
 }
 
 function pickRandomGif(responseData) {
-  return Math.floor(Math.random() * responseData.length);
+  const randomNum = Math.floor(Math.random() * responseData.length);
+  const gifUrl = responseData[randomNum].images.original.url;
+  return gifUrl;
 }
 
 function createImg(gifUrl) {
@@ -42,7 +44,6 @@ function removeGifs(evt) {
   $gifContainer.empty();
 }
 
-
-$("#search").submit(getGiphy);
+$("#search").submit(addGiphy);
 $removeBtn.submit(removeGifs);
 
